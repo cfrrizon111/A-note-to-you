@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>A Note To You</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#111;
+color:white;
+text-align:center;
+padding:40px;
+}
+.box{
+max-width:700px;
+margin:auto;
+background:#222;
+padding:20px;
+border-radius:15px;
+}
+button{
+padding:10px 20px;
+font-size:18px;
+}
+#count{
+font-size:50px;
+margin:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h1>A Note To You ❤️</h1>
+
+<p>
+I'm sorry for my mistakes.
+This page is simply a place for my thoughts,
+growth, and reflections.
+</p>
+
+<h2>Times I Thought About You</h2>
+
+<div id="count">0</div>
+
+<button onclick="addOne()">
+I Thought About You
+</button>
+
+</div>
+
+<script>
+let count=localStorage.getItem("count") || 0;
+document.getElementById("count").innerText=count;
+
+function addOne(){
+count++;
+localStorage.setItem("count",count);
+document.getElementById("count").innerText=count;
+}
+</script>
+
+</body>
+</html>
