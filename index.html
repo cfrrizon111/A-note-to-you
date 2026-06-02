@@ -1,379 +1,248 @@
 <!DOCTYPE html>
-
-
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Moonlight for Squirrel</title>
-
-
 
 <style>
 
-
+html{
+scroll-behavior:smooth;
+}
 
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 font-family:Georgia, serif;
-
 }
-
-
 
 body{
-
 background:#050816;
-
 color:white;
-
 overflow-x:hidden;
-
 }
-
-
 
 .stars{
-
 position:fixed;
-
 width:100%;
-
 height:100%;
-
 background:
-
 radial-gradient(white 1px, transparent 1px);
-
 background-size:50px 50px;
-
 opacity:.35;
-
 z-index:-2;
-
 }
-
-
-
-.hero{
-
-height:100vh;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-text-align:center;
-
-padding:20px;
-
-}
-
-
-
-.moon{
-
-width:180px;
-
-height:180px;
-
-background:#f6f6f6;
-
-border-radius:50%;
-
-box-shadow:0 0 50px rgba(255,255,255,.7);
-
-margin-bottom:30px;
-
-}
-
-
-
-h1{
-
-font-size:3rem;
-
-margin-bottom:10px;
-
-}
-
-
-
-.subtitle{
-
-font-size:1.2rem;
-
-opacity:.8;
-
-max-width:700px;
-
-}
-
-
 
 nav{
-
 position:fixed;
-
 top:0;
-
 width:100%;
-
 background:rgba(0,0,0,.4);
-
 backdrop-filter:blur(10px);
-
 padding:15px;
 
-text-align:center;
-
-}
-
-
-
-nav a{
-
-color:white;
-
-text-decoration:none;
-
-margin:0 15px;
-
-}
-
-
-
-.section{
-
-padding:80px 20px;
-
-max-width:900px;
-
-margin:auto;
-
-}
-
-
-
-.card{
-
-background:#111827;
-
-padding:25px;
-
-border-radius:15px;
-
-margin-bottom:25px;
-
-}
-
-
-
-.gallery{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-
+display:flex;
+justify-content:center;
+align-items:center;
 gap:15px;
 
+z-index:1000;
 }
 
+nav a{
+color:white;
+text-decoration:none;
+font-size:18px;
+}
 
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.moon{
+width:180px;
+height:180px;
+background:#f6f6f6;
+border-radius:50%;
+margin-bottom:30px;
+
+animation:pulse 4s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+box-shadow:0 0 20px white;
+}
+
+50%{
+box-shadow:
+0 0 60px white,
+0 0 120px rgba(255,255,255,.6);
+}
+
+100%{
+box-shadow:0 0 20px white;
+}
+
+}
+
+h1{
+font-size:3rem;
+margin-bottom:10px;
+}
+
+.subtitle{
+font-size:1.2rem;
+opacity:.8;
+max-width:700px;
+}
+
+.section{
+padding:80px 20px;
+max-width:900px;
+margin:auto;
+}
+
+.card{
+background:#111827;
+padding:25px;
+border-radius:15px;
+margin-bottom:25px;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 20px rgba(255,255,255,.15);
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+}
 
 .gallery img{
-
 width:100%;
-
 border-radius:12px;
-
+cursor:pointer;
+transition:.4s;
 }
 
+.gallery img:hover{
+transform:scale(1.03);
+}
 
+#viewer{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.95);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+#viewer img{
+max-width:95%;
+max-height:95%;
+border-radius:15px;
+}
 
 </style>
-
-
-
 </head>
-
-
 
 <body>
 
-
-
 <div class="stars"></div>
-
-
-
-<nav>
 
 <nav>
 <a href="#home">Home</a>
 <a href="#memories">Memories</a>
 <a href="#gallery">Gallery</a>
 <a href="#letter">Letter</a>
-
-
 </nav>
-
-
 
 <section class="hero" id="home">
 
-
-
 <div class="moon"></div>
-
-
 
 <h1>For Shahrin ❤️</h1>
 
-
-
 <p class="subtitle">
-
 My Squirrel.
-
 A collection of memories, gratitude,
-
 and moments that became stars in my sky.
-
 </p>
 
-
-
 </section>
-
-
 
 <section class="section" id="memories">
 
-
-
 <h2>⭐ Constellation of Memories</h2>
 
-
-
 <div class="card">
-
 <h3>March 25</h3>
-
 <p>The night I replied to your story and we talked all night.</p>
-
 </div>
 
-
-
 <div class="card">
-
 <h3>May 3, 2022</h3>
-
 <p>Our first one-hour call on Eid-ul-Fitr.</p>
-
 </div>
 
-
-
 <div class="card">
-
 <h3>August 4, 2024</h3>
-
 <p>The night you stayed and comforted me.</p>
-
 </div>
 
-
-
 <div class="card">
-
 <h3>August 25, 2024</h3>
-
 <p>The day we first met during the floods in Feni.</p>
-
 </div>
 
-
-
 <div class="card">
-
 <h3>October 2, 2024</h3>
-
 <p>The day I became "Rizon".</p>
-
 </div>
-
-
 
 <div class="card">
-
 <h3>October 24, 2024</h3>
-
 <p>The day you told me how you felt.</p>
-
 </div>
-
-
 
 </section>
-
-
 
 <section class="section" id="gallery">
 
-
-
 <h2>📸 Gallery</h2>
-
-
 
 <div class="gallery">
 
-
-
-<img src="Photo1.jpg">
-
-<img src="Photo2.jpg">
-
-<img src="Photo3.jpg">
-
-<img src="Photo4.jpg">
-
-<img src="Photo5.jpg">
-
-<img src="Photo6.jpg">
-
-<img src="Photo7.jpg">
-
-<img src="Photo8.jpg">
-
-<img src="Photo9.jpg">
-
-<img src="Photo10.jpg">
-
-
+<img src="Photo1.jpg" onclick="openImage(this.src)">
+<img src="Photo2.jpg" onclick="openImage(this.src)">
+<img src="Photo3.jpg" onclick="openImage(this.src)">
+<img src="Photo4.jpg" onclick="openImage(this.src)">
+<img src="Photo5.jpg" onclick="openImage(this.src)">
+<img src="Photo6.jpg" onclick="openImage(this.src)">
+<img src="Photo7.jpg" onclick="openImage(this.src)">
+<img src="Photo8.jpg" onclick="openImage(this.src)">
+<img src="Photo9.jpg" onclick="openImage(this.src)">
+<img src="Photo10.jpg" onclick="openImage(this.src)">
 
 </div>
-
-
-
-</section>
 
 </section>
 
@@ -390,18 +259,31 @@ It's simply a place where I can remember the good moments,
 acknowledge my mistakes,
 and appreciate the lessons I learned.
 
-Thank you for your existence. You are the best thing that ever happened to me.
-
-
+Thank you for your existence.
+You are one of the most important parts of my story,
+and I will always be grateful for the memories we shared.
 </p>
 
 </div>
 
 </section>
 
-</body>
-</html>
+<div id="viewer" onclick="closeImage()">
+<img id="viewerImg">
+</div>
+
+<script>
+
+function openImage(src){
+document.getElementById("viewer").style.display="flex";
+document.getElementById("viewerImg").src=src;
+}
+
+function closeImage(){
+document.getElementById("viewer").style.display="none";
+}
+
+</script>
 
 </body>
-
 </html>
