@@ -6,7 +6,6 @@
 <title>Moonlight for Squirrel</title>
 
 <style>
-
 html{
 scroll-behavior:smooth;
 }
@@ -28,8 +27,7 @@ overflow-x:hidden;
 position:fixed;
 width:100%;
 height:100%;
-background:
-radial-gradient(white 1px, transparent 1px);
+background:radial-gradient(white 1px, transparent 1px);
 background-size:50px 50px;
 opacity:.35;
 z-index:-2;
@@ -42,12 +40,10 @@ width:100%;
 background:rgba(0,0,0,.4);
 backdrop-filter:blur(10px);
 padding:15px;
-
 display:flex;
 justify-content:center;
 align-items:center;
 gap:15px;
-
 z-index:1000;
 }
 
@@ -73,26 +69,21 @@ height:180px;
 background:#f6f6f6;
 border-radius:50%;
 margin-bottom:30px;
-
 animation:pulse 4s infinite;
 }
 
 @keyframes pulse{
-
 0%{
 box-shadow:0 0 20px white;
 }
-
 50%{
 box-shadow:
 0 0 60px white,
 0 0 120px rgba(255,255,255,.6);
 }
-
 100%{
 box-shadow:0 0 20px white;
 }
-
 }
 
 h1{
@@ -161,6 +152,16 @@ max-height:95%;
 border-radius:15px;
 }
 
+.shooting-star{
+position:fixed;
+top:-100px;
+width:2px;
+height:100px;
+background:linear-gradient(white, transparent);
+transform:rotate(45deg);
+pointer-events:none;
+z-index:-1;
+}
 </style>
 </head>
 
@@ -176,17 +177,25 @@ border-radius:15px;
 </nav>
 
 <section class="hero" id="home">
-
 <div class="moon"></div>
 
 <h1>For Shahrin ❤️</h1>
 
 <p class="subtitle">
-My Squirrel.
+My Squirrel.<br>
 A collection of memories, gratitude,
-and moments that became stars in my sky.
+and moments that quietly became
+stars in my night sky.
 </p>
+</section>
 
+<section class="section">
+<h2>🌙 Days Since We Met</h2>
+
+<div class="card">
+<h1 id="daysCounter"></h1>
+<p>Since August 25, 2024</p>
+</div>
 </section>
 
 <section class="section" id="memories">
@@ -230,7 +239,6 @@ and moments that became stars in my sky.
 <h2>📸 Gallery</h2>
 
 <div class="gallery">
-
 <img src="Photo1.jpg" onclick="openImage(this.src)">
 <img src="Photo2.jpg" onclick="openImage(this.src)">
 <img src="Photo3.jpg" onclick="openImage(this.src)">
@@ -241,7 +249,6 @@ and moments that became stars in my sky.
 <img src="Photo8.jpg" onclick="openImage(this.src)">
 <img src="Photo9.jpg" onclick="openImage(this.src)">
 <img src="Photo10.jpg" onclick="openImage(this.src)">
-
 </div>
 
 </section>
@@ -251,19 +258,17 @@ and moments that became stars in my sky.
 <h2>💌 A Letter</h2>
 
 <div class="card">
-
 <p>
-This website isn't meant to hurt you.
+This website isn't meant to hurt you.<br><br>
 
 It's simply a place where I can remember the good moments,
 acknowledge my mistakes,
-and appreciate the lessons I learned.
+and appreciate the lessons I learned.<br><br>
 
 Thank you for your existence.
 You are one of the most important parts of my story,
 and I will always be grateful for the memories we shared.
 </p>
-
 </div>
 
 </section>
@@ -282,6 +287,42 @@ document.getElementById("viewerImg").src=src;
 function closeImage(){
 document.getElementById("viewer").style.display="none";
 }
+
+const firstMeet = new Date("2024-08-25");
+const today = new Date();
+
+const diffDays = Math.floor(
+(today - firstMeet) / (1000 * 60 * 60 * 24)
+);
+
+document.getElementById("daysCounter").innerText = diffDays;
+
+function createShootingStar(){
+
+const star = document.createElement("div");
+
+star.className = "shooting-star";
+star.style.left = Math.random() * window.innerWidth + "px";
+
+document.body.appendChild(star);
+
+let pos = -100;
+
+const fall = setInterval(() => {
+
+pos += 15;
+star.style.top = pos + "px";
+
+if(pos > window.innerHeight + 100){
+clearInterval(fall);
+star.remove();
+}
+
+},20);
+
+}
+
+setInterval(createShootingStar,4000);
 
 </script>
 
