@@ -15,7 +15,7 @@ scroll-behavior:smooth;
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Georgia, serif;
+font-family:Georgia,serif;
 }
 
 body{
@@ -24,7 +24,7 @@ color:white;
 overflow-x:hidden;
 }
 
-/* Twinkling Stars */
+/* Stars */
 
 .stars{
 position:fixed;
@@ -34,20 +34,29 @@ background:
 radial-gradient(white 1px, transparent 1px);
 background-size:50px 50px;
 opacity:.35;
-z-index:-2;
+z-index:-3;
 animation:twinkle 6s infinite alternate;
 }
 
 @keyframes twinkle{
-from{
-opacity:.20;
-}
-to{
-opacity:.55;
-}
+from{opacity:.2;}
+to{opacity:.55;}
 }
 
-/* Navigation */
+/* Fireflies */
+
+.firefly{
+position:fixed;
+width:4px;
+height:4px;
+background:white;
+border-radius:50%;
+box-shadow:0 0 10px white;
+pointer-events:none;
+z-index:-2;
+}
+
+/* Nav */
 
 nav{
 position:fixed;
@@ -56,13 +65,10 @@ width:100%;
 background:rgba(0,0,0,.4);
 backdrop-filter:blur(10px);
 padding:15px;
-
 display:flex;
 justify-content:center;
-align-items:center;
 gap:15px;
-
-z-index:1000;
+z-index:999;
 }
 
 nav a{
@@ -84,41 +90,40 @@ padding:20px;
 }
 
 .moon{
-width:180px;
-height:180px;
+width:200px;
+height:200px;
 background:#f6f6f6;
 border-radius:50%;
+animation:pulse 5s infinite;
 margin-bottom:30px;
-
-animation:pulse 4s infinite;
 }
 
 @keyframes pulse{
 
 0%{
-box-shadow:0 0 20px white;
+box-shadow:0 0 25px white;
 }
 
 50%{
 box-shadow:
-0 0 60px white,
-0 0 120px rgba(255,255,255,.6);
+0 0 80px white,
+0 0 160px rgba(255,255,255,.6);
 }
 
 100%{
-box-shadow:0 0 20px white;
+box-shadow:0 0 25px white;
 }
 
 }
 
-h1{
-font-size:3rem;
-margin-bottom:10px;
+.hero h1{
+font-size:4rem;
+margin-bottom:15px;
 }
 
 .subtitle{
-font-size:1.2rem;
-opacity:.8;
+font-size:1.3rem;
+opacity:.85;
 max-width:700px;
 }
 
@@ -128,6 +133,10 @@ max-width:700px;
 padding:80px 20px;
 max-width:900px;
 margin:auto;
+}
+
+.section h2{
+margin-bottom:20px;
 }
 
 .card{
@@ -148,21 +157,33 @@ box-shadow:0 0 20px rgba(255,255,255,.15);
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:15px;
+gap:20px;
 }
 
-.gallery img{
+.gallery-item{
+background:#111827;
+padding:10px;
+border-radius:15px;
+}
+
+.gallery-item img{
 width:100%;
 border-radius:12px;
 cursor:pointer;
 transition:.4s;
 }
 
-.gallery img:hover{
+.gallery-item img:hover{
 transform:scale(1.03);
 }
 
-/* Full Screen Viewer */
+.gallery-item p{
+margin-top:10px;
+text-align:center;
+opacity:.8;
+}
+
+/* Image Viewer */
 
 #viewer{
 display:none;
@@ -183,33 +204,63 @@ max-height:95%;
 border-radius:15px;
 }
 
-/* Better Shooting Stars */
+/* Music Button */
+
+#musicBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+width:60px;
+height:60px;
+border:none;
+border-radius:50%;
+font-size:25px;
+cursor:pointer;
+background:#111827;
+color:white;
+box-shadow:0 0 15px rgba(255,255,255,.3);
+z-index:999;
+}
+
+/* Shooting Star */
 
 .shooting-star{
 position:fixed;
 width:3px;
 height:120px;
-background:linear-gradient(
+background:
+linear-gradient(
 to bottom,
 white,
-rgba(255,255,255,0)
+transparent
 );
 transform:rotate(45deg);
 pointer-events:none;
 z-index:-1;
-opacity:.9;
+}
+
+/* Footer */
+
+footer{
+padding:40px;
+text-align:center;
+opacity:.7;
 }
 
 /* Mobile */
 
 @media(max-width:600px){
 
-h1{
-font-size:2.3rem;
+.hero h1{
+font-size:2.6rem;
 }
 
 nav a{
 font-size:15px;
+}
+
+.subtitle{
+font-size:1rem;
 }
 
 }
@@ -223,6 +274,7 @@ font-size:15px;
 
 <nav>
 <a href="#home">Home</a>
+<a href="#days">Days</a>
 <a href="#memories">Memories</a>
 <a href="#gallery">Gallery</a>
 <a href="#letter">Letter</a>
@@ -236,23 +288,40 @@ font-size:15px;
 
 <p class="subtitle">
 My Squirrel.<br>
-A collection of memories, gratitude,
-and moments that quietly became
-stars in my night sky.
+A collection of memories,
+gratitude,
+and moments that quietly became stars in my sky.
 </p>
+
+</section>
+<section class="section" id="days">
+
+<h2>🌙 Days Since We Met</h2>
+
+<div class="card">
+<h1 id="daysCounter"></h1>
+<p>Since August 25, 2024</p>
+</div>
 
 </section>
 
 <section class="section">
 
-<h2>🌙 Days Since We Met</h2>
+<h2>🌕 Tonight's Moon</h2>
 
 <div class="card">
+<h1 id="moonPhase"></h1>
+<p>The moon changes, and so do we.</p>
+</div>
 
-<h1 id="daysCounter"></h1>
+</section>
 
-<p>Since August 25, 2024</p>
+<section class="section">
 
+<h2>✨ Random Thought</h2>
+
+<div class="card">
+<p id="quote"></p>
 </div>
 
 </section>
@@ -299,16 +368,55 @@ stars in my night sky.
 
 <div class="gallery">
 
+<div class="gallery-item">
 <img src="Photo1.jpg" onclick="openImage(this.src)">
+<p>A memory frozen in time.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo2.jpg" onclick="openImage(this.src)">
+<p>One of my favorite smiles.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo3.jpg" onclick="openImage(this.src)">
+<p>A beautiful moment.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo4.jpg" onclick="openImage(this.src)">
+<p>A day worth remembering.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo5.jpg" onclick="openImage(this.src)">
+<p>A small moment that stayed.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo6.jpg" onclick="openImage(this.src)">
+<p>A memory under the same sky.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo7.jpg" onclick="openImage(this.src)">
+<p>Time passes, memories remain.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo8.jpg" onclick="openImage(this.src)">
+<p>One more star in the constellation.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo9.jpg" onclick="openImage(this.src)">
+<p>A chapter I won't forget.</p>
+</div>
+
+<div class="gallery-item">
 <img src="Photo10.jpg" onclick="openImage(this.src)">
+<p>A moment worth keeping forever.</p>
+</div>
 
 </div>
 
@@ -321,17 +429,31 @@ stars in my night sky.
 <div class="card">
 
 <p>
+
 This website isn't meant to hurt you.
+
 <br><br>
 
 It's simply a place where I can remember the good moments,
 acknowledge my mistakes,
 and appreciate the lessons I learned.
+
 <br><br>
 
 Thank you for your existence.
-You are one of the most important parts of my story,
-and I will always be grateful for the memories we shared.
+
+Thank you for every conversation,
+every laugh,
+every memory,
+and every lesson.
+
+<br><br>
+
+No matter where life takes us,
+I genuinely hope you find happiness,
+peace,
+and everything you deserve.
+
 </p>
 
 </div>
@@ -341,6 +463,21 @@ and I will always be grateful for the memories we shared.
 <div id="viewer" onclick="closeImage()">
 <img id="viewerImg">
 </div>
+
+<audio id="music" loop>
+<source src="music.mp3.m4a" type="audio/mp4">
+</audio>
+
+<button id="musicBtn">🎵</button>
+
+<footer>
+
+<p>
+"Some people become memories.
+Some memories become stars."
+</p>
+
+</footer>
 
 <script>
 
@@ -359,37 +496,108 @@ const firstMeet = new Date("2024-08-25");
 const today = new Date();
 
 const diffDays = Math.floor(
-(today - firstMeet) / (1000 * 60 * 60 * 24)
+(today - firstMeet)/(1000*60*60*24)
 );
 
-document.getElementById("daysCounter").innerText = diffDays;
+document.getElementById("daysCounter").innerText =
+diffDays;
 
-/* Better Shooting Stars */
+/* Moon Phase */
+
+const phases = [
+"🌑 New Moon",
+"🌒 Waxing Crescent",
+"🌓 First Quarter",
+"🌔 Waxing Gibbous",
+"🌕 Full Moon",
+"🌖 Waning Gibbous",
+"🌗 Last Quarter",
+"🌘 Waning Crescent"
+];
+
+const phase =
+phases[Math.floor((new Date().getDate()%29)/4)];
+
+document.getElementById("moonPhase").innerText =
+phase;
+
+/* Random Quote */
+
+const quotes = [
+"Some memories become stars.",
+"Time changes people, not memories.",
+"Every ending teaches something.",
+"The sky remembers every star.",
+"Gratitude survives distance.",
+"The moon shines even when unseen.",
+"Some stories never truly end."
+];
+
+document.getElementById("quote").innerText =
+quotes[Math.floor(Math.random()*quotes.length)];
+
+/* Music */
+
+const music =
+document.getElementById("music");
+
+const btn =
+document.getElementById("musicBtn");
+
+let playing = false;
+
+btn.onclick = function(){
+
+if(!playing){
+music.play();
+btn.innerHTML="⏸️";
+playing=true;
+}
+else{
+music.pause();
+btn.innerHTML="🎵";
+playing=false;
+}
+
+};
+
+/* Shooting Stars */
 
 function createShootingStar(){
 
-const star = document.createElement("div");
+const star =
+document.createElement("div");
 
-star.className = "shooting-star";
+star.className =
+"shooting-star";
 
-let x = Math.random() * window.innerWidth;
+let x =
+Math.random()*window.innerWidth;
+
 let y = -100;
 
-star.style.left = x + "px";
-star.style.top = y + "px";
+star.style.left =
+x+"px";
+
+star.style.top =
+y+"px";
 
 document.body.appendChild(star);
 
-const move = setInterval(()=>{
+const move =
+setInterval(()=>{
 
 x -= 8;
 y += 8;
 
-star.style.left = x + "px";
-star.style.top = y + "px";
+star.style.left =
+x+"px";
+
+star.style.top =
+y+"px";
 
 if(
-y > window.innerHeight + 100 ||
+y > window.innerHeight+100 ||
 x < -200
 ){
 clearInterval(move);
@@ -400,7 +608,39 @@ star.remove();
 
 }
 
-setInterval(createShootingStar,3000);
+setInterval(
+createShootingStar,
+3000
+);
+
+/* Fireflies */
+
+function createFirefly(){
+
+const f =
+document.createElement("div");
+
+f.className =
+"firefly";
+
+f.style.left =
+Math.random()*window.innerWidth+"px";
+
+f.style.top =
+Math.random()*window.innerHeight+"px";
+
+document.body.appendChild(f);
+
+setTimeout(()=>{
+f.remove();
+},5000);
+
+}
+
+setInterval(
+createFirefly,
+1000
+);
 
 </script>
 
