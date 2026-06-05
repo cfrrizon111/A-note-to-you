@@ -238,7 +238,73 @@ transform:rotate(45deg);
 pointer-events:none;
 z-index:-1;
 }
+.star-map{
+  position:relative;
+  height:600px;
+  background:rgba(255,255,255,.03);
+  border-radius:20px;
+  overflow:hidden;
+}
 
+.memory-star{
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:white;
+  border-radius:50%;
+  box-shadow:0 0 15px white;
+  cursor:pointer;
+  animation:starPulse 2s infinite;
+  z-index:2;
+}
+
+@keyframes starPulse{
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.6);
+  }
+}
+
+.constellation-lines{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+.constellation-lines line{
+  stroke:rgba(255,255,255,.35);
+  stroke-width:2;
+}
+
+#memoryPopup{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:90%;
+  max-width:420px;
+  background:#111827;
+  padding:25px;
+  border-radius:15px;
+  z-index:10000;
+  box-shadow:0 0 30px rgba(255,255,255,.2);
+}
+
+#memoryPopup h3{
+  margin-bottom:10px;
+}
+
+#memoryPopup button{
+  margin-top:15px;
+  padding:10px 15px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:white;
+}
 /* Footer */
 
 footer{
@@ -328,36 +394,62 @@ and moments that quietly became stars in my sky.
 
 <section class="section" id="memories">
 
+<section class="section" id="memories">
+
 <h2>⭐ Constellation of Memories</h2>
 
-<div class="card">
-<h3>March 25,2022</h3>
-<p>The night I replied to your story and we talked all night.</p>
+<div class="star-map">
+
+  <svg class="constellation-lines">
+    <line x1="15%" y1="20%" x2="70%" y2="35%" />
+    <line x1="70%" y1="35%" x2="45%" y2="40%" />
+    <line x1="45%" y1="40%" x2="25%" y2="55%" />
+    <line x1="25%" y1="55%" x2="80%" y2="75%" />
+    <line x1="80%" y1="75%" x2="85%" y2="15%" />
+  </svg>
+
+  <div class="memory-star"
+       style="top:20%;left:15%;"
+       data-date="March 25, 2022"
+       data-text="The night I replied to your story and we talked all night.">
+  </div>
+
+  <div class="memory-star"
+       style="top:35%;left:70%;"
+       data-date="May 3, 2022"
+       data-text="Our first one hour call on Eid ul Fitr.I was so excited.">
+  </div>
+
+  <div class="memory-star"
+       style="top:55%;left:25%;"
+       data-date="August 4, 2024"
+       data-text="The night you stayed and comforted me the whole night.">
+  </div>
+
+  <div class="memory-star"
+       style="top:75%;left:80%;"
+       data-date="August 25, 2024"
+       data-text="The day we first met during the floods in Feni.I came to your house. I still remember that exact moment.">
+  </div>
+
+  <div class="memory-star"
+       style="top:40%;left:45%;"
+       data-date="October 2, 2024"
+       data-text="The day I became Rizon.The day you started calling me by my name.">
+  </div>
+
+  <div class="memory-star"
+       style="top:15%;left:85%;"
+       data-date="October 24, 2024"
+       data-text="The day you told me how you felt about me.One of the best days of my life.">
+  </div>
+
 </div>
 
-<div class="card">
-<h3>May 3, 2022</h3>
-<p>Our first one hour call on Eid ul Fitr.I was so excited. </p>
-</div>
-
-<div class="card">
-<h3>August 4, 2024</h3>
-<p>The night you stayed and comforted me the whole night.</p>
-</div>
-
-<div class="card">
-<h3>August 25, 2024</h3>
-<p>The day we first met during the floods in Feni.I came to your house. I still remember that exact moment.</p>
-</div>
-
-<div class="card">
-<h3>October 2, 2024</h3>
-<p>The day I became "Rizon".The day you started calling me by my name  </p>
-</div>
-
-<div class="card">
-<h3>October 24, 2024</h3>
-<p>The day you told me how you felt about me.One of the best days of my life.</p>
+<div id="memoryPopup">
+  <h3 id="memoryDate"></h3>
+  <p id="memoryText"></p>
+  <button onclick="closeMemory()">Close</button>
 </div>
 
 </section>
@@ -531,7 +623,26 @@ const quotes = [
 
 document.getElementById("quote").innerText =
 quotes[Math.floor(Math.random()*quotes.length)];
+// Memory Constellation
+document.querySelectorAll(".memory-star").forEach(star => {
 
+  star.addEventListener("click", () => {
+
+    document.getElementById("memoryDate").innerText =
+      star.dataset.date;
+
+    document.getElementById("memoryText").innerText =
+      star.dataset.text;
+
+    document.getElementById("memoryPopup").style.display = "block";
+
+  });
+
+});
+
+function closeMemory(){
+  document.getElementById("memoryPopup").style.display = "none";
+}
 /* Music */
 
 const music =
