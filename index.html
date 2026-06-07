@@ -127,13 +127,6 @@ opacity:.85;
 max-width:700px;
 }
 
-#welcomeMessage{
-margin-top:15px;
-font-size:1.1rem;
-opacity:.9;
-color:#e5e7eb;
-}
-
 /* Sections */
 
 .section{
@@ -446,7 +439,6 @@ font-size:1rem;
 <div class="moon"></div>
 
 <h1>For Shahrin ❤️</h1>
-<p id="welcomeMessage"></p>
 
 <p class="subtitle">
 My Squirrel.<br>
@@ -463,7 +455,6 @@ and moments that quietly became stars in my sky.
 <div class="card">
 <h1 id="daysCounter"></h1>
 <p>Since August 25, 2024</p>
-<p id="visitCounter"></p>
 </div>
 
 </section>
@@ -692,6 +683,8 @@ I love YOU with ever cells in my body.
     </a>
   </div>
 </section>
+
+<footer>
 
 <footer>
 
@@ -956,39 +949,6 @@ star.style.display = "none";
 },9000);
 }
 setInterval(spawnSecretStar, 10000);
-
-
-// Dynamic Welcome Message
-const hour = new Date().getHours();
-const welcome = document.getElementById("welcomeMessage");
-if(welcome){
-if(hour < 12){welcome.innerText="Good morning, Squirrel 🌤️";}
-else if(hour < 18){welcome.innerText="The sky feels bright today ☁️";}
-else{welcome.innerText="The moon was waiting for you 🌙";}
-}
-
-// Random Sky Color
-const skies=["#050816","#081229","#111827","#0B1026","#1A1B3A"];
-document.body.style.background=skies[Math.floor(Math.random()*skies.length)];
-
-// Living Constellation
-document.querySelectorAll(".memory-star").forEach(star=>{
-const top=parseFloat(star.style.top);
-const left=parseFloat(star.style.left);
-if(!isNaN(top)&&!isNaN(left)){
-star.style.top=(top+(Math.random()*4-2))+"%";
-star.style.left=(left+(Math.random()*4-2))+"%";
-}
-});
-
-// Visit Counter
-let visits=localStorage.getItem("skyVisits")||0;
-visits++;
-localStorage.setItem("skyVisits",visits);
-const vc=document.getElementById("visitCounter");
-if(vc){
-vc.innerText="✨ You have visited this sky "+visits+" times";
-}
 
 </script>
 
