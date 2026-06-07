@@ -364,12 +364,11 @@ to{opacity:1;}
 /* Secret Star */
 #secretStar{
 position:fixed;
-top:20%;
-left:85%;
 font-size:24px;
 cursor:pointer;
 z-index:1000;
 animation:twinkle 2s infinite;
+display:none;
 }
 
 #secretMessage,#moonMessage{
@@ -905,7 +904,23 @@ const s=document.getElementById("secretMessage");
 s.style.display="block";
 setTimeout(()=>s.style.display="none",4000);
 };
+  
+// Secret star random appearance
 
+function spawnSecretStar(){
+
+const star =
+document.getElementById("secretStar");
+star.style.top =
+(10 + Math.random()*70) + "%";
+star.style.left =
+(10 + Math.random()*80) + "%";
+star.style.display = "block";
+setTimeout(()=>{
+star.style.display = "none";
+},5000);
+}
+setInterval(spawnSecretStar, 45000);
 
 </script>
 
