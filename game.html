@@ -3,270 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moon Journey</title>
+
+<title>The Moon Is Alive</title>
 
 <style>
 body{
 margin:0;
-overflow:hidden;
-background:#020617;
-font-family:Georgia,serif;
+background:#030617;
 color:white;
+font-family:Georgia,serif;
+overflow:hidden;
 }
 
-canvas{
-display:block;
-background:
-radial-gradient(circle at center,#071330,#020617);
-}
-
-#hud{
+#moon{
+width:180px;
+height:180px;
+border-radius:50%;
+background:white;
+box-shadow:0 0 80px rgba(255,255,255,.8);
 position:absolute;
-top:10px;
-left:10px;
-font-size:20px;
-z-index:10;
+top:20%;
+left:50%;
+transform:translateX(-50%);
 }
 
 #message{
 position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+bottom:25%;
+width:100%;
 text-align:center;
-display:none;
-background:rgba(0,0,0,.8);
-padding:25px;
-border-radius:20px;
+font-size:1.5rem;
+padding:20px;
+}
+
+.buttons{
+position:absolute;
+bottom:12%;
+width:100%;
+text-align:center;
 }
 
 button{
-padding:10px 20px;
+padding:12px 25px;
+margin:10px;
+font-size:1rem;
 border:none;
 border-radius:10px;
 cursor:pointer;
-font-size:18px;
-margin-top:15px;
 }
 
-.controls{
+.stars{
 position:absolute;
-bottom:20px;
 width:100%;
-display:flex;
-justify-content:space-between;
-padding:0 20px;
-box-sizing:border-box;
+height:100%;
+pointer-events:none;
 }
 
-.ctrl{
-width:80px;
-height:80px;
+.star{
+position:absolute;
+width:4px;
+height:4px;
+background:white;
 border-radius:50%;
-background:rgba(255,255,255,.15);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:32px;
-user-select:none;
+opacity:.7;
 }
 </style>
 </head>
 
 <body>
 
-<div id="hud">
-⭐ Stars: <span id="score">0</span>
-<br>
-❤️ Lives: <span id="lives">3</span>
+<div class="stars" id="stars"></div>
+
+<div id="moon"></div>
+
+<div id="message">
+Hello.
 </div>
 
-<div id="message"></div>
-
-<canvas id="game"></canvas>
-
-<div class="controls">
-<div class="ctrl" id="left">⬅️</div>
-<div class="ctrl" id="right">➡️</div>
+<div class="buttons" id="buttons">
+<button onclick="startStory()">Continue</button>
 </div>
 
 <script>
 
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
+for(let i=0;i<120;i++){
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+const star=document.createElement("div");
 
-let score=0;
-let lives=3;
+star.className="star";
 
-const moon={
-x:canvas.width/2,
-y:canvas.height-120,
-size:35,
-speed:8
-};
+star.style.left=Math.random()*100+"%";
 
-let stars=[];
-let clouds=[];
+star.style.top=Math.random()*100+"%";
 
-let leftPressed=false;
-let rightPressed=false;
+document.getElementById("stars").appendChild(star);
 
-document.addEventListener("keydown",(e)=>{
-if(e.key==="ArrowLeft") leftPressed=true;
-if(e.key==="ArrowRight") rightPressed=true;
-});
-
-document.addEventListener("keyup",(e)=>{
-if(e.key==="ArrowLeft") leftPressed=false;
-if(e.key==="ArrowRight") rightPressed=false;
-});
-
-document.getElementById("left").ontouchstart=()=>leftPressed=true;
-document.getElementById("left").ontouchend=()=>leftPressed=false;
-
-document.getElementById("right").ontouchstart=()=>rightPressed=true;
-document.getElementById("right").ontouchend=()=>rightPressed=false;
-
-function spawnStar(){
-stars.push({
-x:Math.random()*canvas.width,
-y:-20,
-size:20
-});
 }
 
-function spawnCloud(){
-clouds.push({
-x:Math.random()*canvas.width,
-y:-20,
-size:35
-});
+const message=document.getElementById("message");
+
+const buttons=document.getElementById("buttons");
+
+let answer1="";
+
+function startStory(){
+
+message.innerHTML=
+"I've been watching your journey.";
+
+buttons.innerHTML=
+'<button onclick="question1()">Continue</button>';
+
 }
 
-setInterval(spawnStar,900);
-setInterval(spawnCloud,1800);
+function question1(){
 
-function drawMoon(){
-ctx.beginPath();
-ctx.arc(moon.x,moon.y,moon.size,0,Math.PI*2);
-ctx.fillStyle="#f8f8f8";
-ctx.fill();
-ctx.shadowBlur=25;
-ctx.shadowColor="white";
-}
+message.innerHTML=
+"Do you believe people ever truly disappear?";
 
-function drawStars(){
-for(let i=stars.length-1;i>=0;i--){
-
-stars[i].y+=4;
-
-ctx.font="24px serif";
-ctx.fillText("⭐",stars[i].x,stars[i].y);
-
-let dx=stars[i].x-moon.x;
-let dy=stars[i].y-moon.y;
-
-if(Math.sqrt(dx*dx+dy*dy)<40){
-score++;
-document.getElementById("score").innerText=score;
-stars.splice(i,1);
-
-if(score===5){
-alert("⭐ Memory Unlocked\nMarch 25, 2022");
-}
-
-if(score===10){
-alert("⭐ Memory Unlocked\nMay 3, 2022");
-}
-
-if(score===15){
-alert("⭐ Memory Unlocked\nAugust 25, 2024");
-}
-
-if(score===25){
-winGame();
-}
-}
-
-if(stars[i] && stars[i].y>canvas.height){
-stars.splice(i,1);
-}
-}
-}
-
-function drawClouds(){
-for(let i=clouds.length-1;i>=0;i--){
-
-clouds[i].y+=5;
-
-ctx.font="32px serif";
-ctx.fillText("☁️",clouds[i].x,clouds[i].y);
-
-let dx=clouds[i].x-moon.x;
-let dy=clouds[i].y-moon.y;
-
-if(Math.sqrt(dx*dx+dy*dy)<45){
-
-lives--;
-document.getElementById("lives").innerText=lives;
-
-clouds.splice(i,1);
-
-if(lives<=0){
-loseGame();
-}
-}
-
-if(clouds[i] && clouds[i].y>canvas.height){
-clouds.splice(i,1);
-}
-}
-}
-
-function winGame(){
-document.getElementById("message").style.display="block";
-document.getElementById("message").innerHTML=
+buttons.innerHTML=
 `
-<h1>🌕 Constellation Complete</h1>
-<p>You guided the moon home.</p>
-<button onclick="location.reload()">Play Again</button>
+<button onclick="answer('yes')">Yes</button>
+<button onclick="answer('no')">No</button>
 `;
-cancelAnimationFrame(animationId);
+
 }
 
-function loseGame(){
-document.getElementById("message").style.display="block";
-document.getElementById("message").innerHTML=
+function answer(choice){
+
+answer1=choice;
+
+message.innerHTML=
+"I knew you'd choose that.";
+
+buttons.innerHTML=
+'<button onclick="phase2()">Continue</button>';
+
+}
+
+function phase2(){
+
+message.innerHTML=
+"Still searching for an ending?";
+
+buttons.innerHTML=
+'<button onclick="phase3()">Maybe</button>';
+
+}
+
+function phase3(){
+
+message.innerHTML=
+"There are no stars to collect.";
+
+buttons.innerHTML=
+'<button onclick="phase4()">Then why am I here?</button>';
+
+}
+
+function phase4(){
+
+message.innerHTML=
+"Because curiosity is stronger than goodbye.";
+
+buttons.innerHTML=
+'<button onclick="ending()">...</button>';
+
+}
+
+function ending(){
+
+document.body.style.transition="2s";
+
+document.body.style.background="#000";
+
+message.innerHTML=
 `
-<h1>🌑 Lost in the Clouds</h1>
-<p>The moon lost its way.</p>
-<button onclick="location.reload()">Try Again</button>
+🌙
+
+You expected a game.
+
+Instead, you found a conversation.
+
+Thank you for staying.
 `;
-cancelAnimationFrame(animationId);
+
+buttons.innerHTML=
+`
+<button onclick="location.reload()">
+Restart
+</button>
+`;
+
 }
 
-function update(){
+setTimeout(()=>{
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+if(message.innerHTML==="Hello."){
 
-if(leftPressed) moon.x-=moon.speed;
-if(rightPressed) moon.x+=moon.speed;
+message.innerHTML=
+"Still there?";
 
-if(moon.x<moon.size) moon.x=moon.size;
-if(moon.x>canvas.width-moon.size)
-moon.x=canvas.width-moon.size;
-
-drawMoon();
-drawStars();
-drawClouds();
-
-animationId=requestAnimationFrame(update);
 }
 
-let animationId=requestAnimationFrame(update);
+},120000);
 
 </script>
 
