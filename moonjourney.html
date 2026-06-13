@@ -43,10 +43,10 @@ function closeBox(){document.getElementById("box").style.display="none";paused=f
 
 function milestone(){
 if(score===10)show("🌙<br><br>Interesting... Most people stop before reaching here.");
-if(score===25)show("🌙<br><br>Why are you still playing?<br><br>Curiosity?");
-if(score===50)show("🌙<br><br>You've been here a while.<br><br>I think I remember you.");
-if(score===75)show("🌙<br><br>The sky feels different tonight.");
-if(score===100)show("🌌<br><br>Some journeys end.<br>Some become memories.<br>Some become constellations.<br><br>❤️ Thank you for staying.");
+if(score===20)show("🌙<br><br>Why are you still playing?<br><br>Curiosity?");
+if(score===30)show("🌙<br><br>You've been here a while.<br><br>I think I remember you.");
+if(score===40)show("🌙<br><br>The sky feels different tonight.");
+if(score===50)show("🌌<br><br>Some journeys end.<br>Some become memories.<br>Some become constellations.<br><br>❤️ Thank you for staying.");
 }
 
 setInterval(()=>{if(!paused)stars.push({x:Math.random()*c.width,y:-20});},800);
