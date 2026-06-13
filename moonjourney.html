@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Moon Journey Ultimate</title>
+<style>
+body{margin:0;overflow:hidden;background:#02071d;color:white;font-family:Georgia,serif}
+canvas{display:block}
+#ui{position:fixed;top:15px;left:15px;font-size:22px;z-index:100}
+#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);padding:25px;border-radius:20px;display:none;max-width:340px;text-align:center;z-index:999}
+button{padding:10px 18px;border:none;border-radius:10px;margin:5px}
+.ctrl{position:fixed;bottom:25px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;justify-content:center;align-items:center;font-size:42px}
+#left{left:20px} #right{right:20px}
+</style>
+</head>
+<body>
+
+<div id="ui">⭐ <span id="score">0</span> | ❤️ <span id="lives">3</span></div>
+
+<div id="msg">
+<div id="msgText"></div>
+<button onclick="closeMsg()">Continue</button>
+</div>
+
+<div class="ctrl" id="left">⬅️</div>
+<div class="ctrl" id="right">➡️</div>
+
+<canvas id="game"></canvas>
+
+<script>
+const canvas=document.getElementById('game');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let score=0,lives=3,paused=false;
+let moveLeft=false,moveRight=false;
+
+let p10=false,p20=false,p30=false,p40=false;
+
+const moon={x:canvas.width/2,y:canvas.height-120,r:35,speed:7};
+const stars=[];
+
+function showMsg(t){
+ paused=true;
+ document.getElementById('msgText').innerHTML=t;
+ document.getElementById('msg').style.display='block';
+}
+
+function closeMsg(){
+ document.getElementById('msg').style.display='none';
+ paused=false;
+}
+
+function phase10(){
+ showMsg("🌙<br><br>Interesting...<br><br>Most people stop before reaching here.");
+}
+
+function phase20(){
+ showMsg("🌙<br><br>What do you think this journey is about?<br><br><button onclick='answerMoon()'>⭐ Stars</button><button onclick='answerMoon()'>🌙 The Moon</button><button onclick='answerMoon()'>❓ I don't know</button>");
+}
+
+function phase30(){
+ showMsg("🌙<br><br>You could have left.<br><br>Yet you're still here.<br><br><button onclick='answerMoon()'>Curiosity</button><button onclick='answerMoon()'>Fun</button><button onclick='answerMoon()'>No reason</button>");
+}
+
+function phase40(){
+ showMsg("🌙<br><br>One final question.<br><br>Does every journey need a destination?<br><br><button onclick='finalAnswer()'>YES</button><button onclick='finalAnswer()'>NO</button><button onclick='finalAnswer()'>MAYBE</button>");
+}
+
+function answerMoon(){
+ document.getElementById('msgText').innerHTML="🌙<br><br>Interesting.<br><br>Let's continue.";
+}
+
+function finalAnswer(){
+ document.getElementById('msgText').innerHTML="🌙<br><br>You collected 40 stars.<br><br>You answered every question.<br><br>And you stayed until the end.<br><br>The Moon was alive all along.";
+}
+
+function spawnStar(){
+ stars.push({x:Math.random()*canvas.width,y:-20,s:24});
+}
+setInterval(()=>{if(!paused)spawnStar();},900);
+
+const leftBtn=document.getElementById('left');
+const rightBtn=document.getElementById('right');
+
+leftBtn.addEventListener('touchstart',()=>moveLeft=true);
+leftBtn.addEventListener('touchend',()=>moveLeft=false);
+rightBtn.addEventListener('touchstart',()=>moveRight=true);
+rightBtn.addEventListener('touchend',()=>moveRight=false);
+
+function update(){
+ if(paused)return;
+
+ if(moveLeft) moon.x-=moon.speed;
+ if(moveRight) moon.x+=moon.speed;
+
+ for(let i=stars.length-1;i>=0;i--){
+  stars[i].y+=4;
+
+  let d=Math.hypot(stars[i].x-moon.x,stars[i].y-moon.y);
+
+  if(d<40){
+   score++;
+   document.getElementById('score').innerText=score;
+
+   if(score>=10 && !p10){p10=true;phase10();}
+   if(score>=20 && !p20){p20=true;phase20();}
+   if(score>=30 && !p30){p30=true;phase30();}
+   if(score>=40 && !p40){p40=true;phase40();}
+
+   stars.splice(i,1);
+   continue;
+  }
+
+  if(stars[i] && stars[i].y>canvas.height){
+   lives--;
+   document.getElementById('lives').innerText=lives;
+   stars.splice(i,1);
+
+   if(lives<=0){
+    showMsg("🌑 Journey Over<br><br>Stars Collected: "+score+"<br><br>Try again.");
+   }
+  }
+ }
+}
+
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ ctx.beginPath();
+ ctx.arc(moon.x,moon.y,moon.r,0,Math.PI*2);
+ ctx.fillStyle='white';
+ ctx.shadowBlur=25;
+ ctx.shadowColor='white';
+ ctx.fill();
+
+ ctx.shadowBlur=0;
+
+ stars.forEach(s=>{
+  ctx.font='28px serif';
+  ctx.fillText('⭐',s.x,s.y);
+ });
+}
+
+function loop(){
+ update();
+ draw();
+ requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
