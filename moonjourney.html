@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon Journey V2</title>
+<style>
+body{margin:0;overflow:hidden;background:#020617;color:white;font-family:Georgia,serif}
+canvas{display:block}
+#hud{position:fixed;top:10px;left:10px;font-size:20px}
+#achievement{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111827;padding:12px 20px;border-radius:12px;display:none}
+.controls{position:fixed;bottom:20px;width:100%;display:flex;justify-content:space-between;padding:0 20px;box-sizing:border-box}
+.ctrl{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:32px}
+#end{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);align-items:center;justify-content:center;flex-direction:column;text-align:center}
+button{padding:12px 20px;border:none;border-radius:10px}
+</style>
+</head>
+<body>
+<div id="hud">⭐ <span id="score">0</span> | ❤️ <span id="lives">3</span> | 🏆 <span id="high">0</span></div>
+<div id="achievement"></div>
+<div id="end"></div>
+<canvas id="game"></canvas>
+
+<div class="controls">
+<div class="ctrl" id="left">⬅️</div>
+<div class="ctrl" id="right">➡️</div>
+</div>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth; canvas.height=innerHeight;
+
+let score=0,lives=3;
+let high=localStorage.getItem("moonHighScore")||0;
+document.getElementById("high").textContent=high;
+
+const moon={x:canvas.width/2,y:canvas.height-100,r:30,speed:8};
+let stars=[],clouds=[],particles=[];
+let left=false,right=false;
+
+function achievement(t){
+ const a=document.getElementById("achievement");
+ a.textContent=t;a.style.display="block";
+ setTimeout(()=>a.style.display="none",2500);
+}
+
+function spawnStar(){stars.push({x:Math.random()*canvas.width,y:-20});}
+function spawnCloud(){clouds.push({x:Math.random()*canvas.width,y:-20});}
+
+setInterval(spawnStar,900);
+setInterval(spawnCloud,1800);
+
+function burst(x,y){
+ for(let i=0;i<12;i++){
+  particles.push({x,y,vx:(Math.random()-0.5)*4,vy:(Math.random()-0.5)*4,life:30});
+ }
+}
+
+document.addEventListener("keydown",e=>{
+ if(e.key==="ArrowLeft") left=true;
+ if(e.key==="ArrowRight") right=true;
+});
+document.addEventListener("keyup",e=>{
+ if(e.key==="ArrowLeft") left=false;
+ if(e.key==="ArrowRight") right=false;
+});
+
+left.onpointerdown=()=>window.left=true;
+left.onpointerup=()=>window.left=false;
+right.onpointerdown=()=>window.right=true;
+right.onpointerup=()=>window.right=false;
+
+function finish(msg){
+ const end=document.getElementById("end");
+ end.style.display="flex";
+ end.innerHTML=`<h1>${msg}</h1><p>Score: ${score}</p><button onclick="location.reload()">Play Again</button>`;
+}
+
+function loop(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ if(window.left||left) moon.x-=moon.speed;
+ if(window.right||right) moon.x+=moon.speed;
+
+ moon.x=Math.max(moon.r,Math.min(canvas.width-moon.r,moon.x));
+
+ ctx.beginPath();
+ ctx.arc(moon.x,moon.y,moon.r,0,Math.PI*2);
+ ctx.fillStyle="white";
+ ctx.shadowBlur=25;
+ ctx.shadowColor="white";
+ ctx.fill();
+
+ stars.forEach((s,i)=>{
+  s.y+=4;
+  ctx.font="24px serif";
+  ctx.fillText("⭐",s.x,s.y);
+  const d=Math.hypot(s.x-moon.x,s.y-moon.y);
+  if(d<40){
+   score++;
+   document.getElementById("score").textContent=score;
+   burst(s.x,s.y);
+   stars.splice(i,1);
+
+   if(score==5) achievement("🏆 First Light");
+   if(score==10) achievement("🌙 The Moon Notices You");
+   if(score==20) achievement("⭐ Constellation Builder");
+
+   if(score>high){
+    high=score;
+    localStorage.setItem("moonHighScore",high);
+    document.getElementById("high").textContent=high;
+   }
+
+   if(score>=25) finish("🌕 Constellation Complete");
+  }
+ });
+
+ clouds.forEach((c,i)=>{
+  c.y+=5;
+  ctx.font="32px serif";
+  ctx.fillText("☁️",c.x,c.y);
+  const d=Math.hypot(c.x-moon.x,c.y-moon.y);
+  if(d<45){
+   lives--;
+   document.getElementById("lives").textContent=lives;
+   clouds.splice(i,1);
+   if(lives<=0) finish("🌑 Lost in the Clouds");
+  }
+ });
+
+ particles.forEach((p,i)=>{
+  p.x+=p.vx;p.y+=p.vy;p.life--;
+  ctx.fillStyle="white";
+  ctx.fillRect(p.x,p.y,2,2);
+  if(p.life<=0) particles.splice(i,1);
+ });
+
+ requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
